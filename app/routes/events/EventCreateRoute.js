@@ -10,6 +10,7 @@ import { LoginPage } from 'app/components/LoginForm';
 import { transformEvent } from './utils';
 import { time } from 'app/utils/time.js';
 import replaceUnlessLoggedIn from 'app/utils/replaceUnlessLoggedIn';
+import moment from 'moment';
 
 const mapStateToProps = (state, props) => {
   const actionGrant = state.events.actionGrant;
@@ -35,7 +36,8 @@ const mapStateToProps = (state, props) => {
       isAbakomOnly: false,
       feedbackDescription: 'Melding til arrangører',
       pools: [],
-      unregistrationDeadline: time({ hours: 12 })
+      unregistrationDeadline: time({ hours: 12 }),
+      registrationDeadlineHours: 2
     },
     actionGrant,
     event: {
@@ -43,7 +45,12 @@ const mapStateToProps = (state, props) => {
       isPriced: valueSelector(state, 'isPriced'),
       eventType: valueSelector(state, 'eventType'),
       priceMember: valueSelector(state, 'priceMember'),
-      startTime: valueSelector(state, 'startTime')
+      registrationDeadline:
+        valueSelector(state, 'startTime') &&
+        moment(valueSelector(state, 'startTime')).subtract(
+          valueSelector(state, 'registrationDeadlineHours'),
+          'hours'
+        )
     },
     pools: valueSelector(state, 'pools')
   };
