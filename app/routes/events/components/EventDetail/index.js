@@ -28,6 +28,7 @@ import {
 } from 'app/components/Content';
 import { Link } from 'react-router';
 import UserGrid from 'app/components/UserGrid';
+<<<<<<< HEAD
 import type {
   ID,
   EventPool,
@@ -37,6 +38,9 @@ import type {
 } from 'app/models';
 import type { CommentEntity } from 'app/reducers/comments';
 import type { UserEntity } from 'app/reducers/users';
+=======
+import type { YoutubePlayer } from 'app/models';
+>>>>>>> d2251dc3... Add youtube componenent for event detail
 
 type InterestedButtonProps = {
   isInterested: boolean
@@ -81,7 +85,8 @@ type Props = {
     feedback: string
   ) => Promise<*>,
   deleteEvent: (eventId: ID) => Promise<*>,
-  deleteComment: (id: ID, commentTarget: string) => Promise<*>
+  deleteComment: (id: ID, commentTarget: string) => Promise<*>,
+  youtubeParams?: YoutubePlayer
 };
 
 export default class EventDetail extends Component<Props> {
@@ -138,7 +143,8 @@ export default class EventDetail extends Component<Props> {
       deleteEvent,
       follow,
       unfollow,
-      deleteComment
+      deleteComment,
+      youtubeParams
     } = this.props;
     if (!event.id) {
       return null;
@@ -218,7 +224,10 @@ export default class EventDetail extends Component<Props> {
 
     return (
       <div>
-        <Content banner={event.cover || (event.company && event.company.logo)}>
+        <Content
+          banner={event.cover || (event.company && event.company.logo)}
+          youtubeParams={youtubeParams}
+        >
           <ContentHeader
             borderColor={color}
             onClick={onRegisterClick}
