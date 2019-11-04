@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import helmet from 'app/utils/helmet';
 import { connect } from 'react-redux';
 import { fetchGallery, fetchGalleryMetadata } from 'app/actions/GalleryActions';
+import { fetchGalleryPicture } from 'app/actions/GalleryPictureActions';
 import loadingIndicator from 'app/utils/loadingIndicator';
 import prepare from 'app/utils/prepare';
 import {
@@ -17,13 +18,15 @@ import GalleryDetail from './components/GalleryDetail';
 import { selectGalleryById } from 'app/reducers/galleries';
 import { SelectGalleryPicturesByGalleryId } from 'app/reducers/galleryPictures';
 
-const loadData = ({ params }, dispatch) =>
+const loadData = ({ params }, dispatch) => {
   Promise.all([
+    dispatch(fetchGalleryPicture(params.galleryId, params.pictureId)),
     dispatch(fetch(params.galleryId)).catch(),
     dispatch(fetchGallery(params.galleryId)).catch(err =>
       dispatch(fetchGalleryMetadata(params.galleryId))
     )
   ]);
+};
 
 function mapStateToProps(state, props) {
   const { galleryId } = props.params;
