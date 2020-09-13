@@ -9,6 +9,7 @@ import { Flex } from 'app/components/Layout';
 import Button from 'app/components/Button';
 import { ConfirmModalWithParent } from 'app/components/Modal/ConfirmModal';
 import styles from './Abacard.css';
+import config from 'app/config';
 import type {
   Event,
   Comment,
@@ -41,6 +42,7 @@ export type Props = {
   actionGrant: ActionGrant,
   onQueryChanged: (value: string) => any,
   searching: boolean,
+  token: string,
 };
 
 type State = {
@@ -50,6 +52,7 @@ type State = {
 export default class Attendees extends Component<Props, State> {
   state = {
     clickedUnregister: 0,
+    generatedCSV: {},
   };
 
   handleUnregister = (registrationId: number) => {
@@ -87,6 +90,7 @@ export default class Attendees extends Component<Props, State> {
       loading,
       registered,
       unregistered,
+      token,
     } = this.props;
     const registerCount = registered.filter(
       (reg) => reg.presence === 'PRESENT' && reg.pool
@@ -113,15 +117,38 @@ export default class Attendees extends Component<Props, State> {
               {` ${event.title}`}
             </Link>
           </h2>
-          <ConfirmModalWithParent
-            title="Eksporter til csv"
-            message={`Informasjonen du eksporterer MÅ slettes når det ikke lenger er behov for den,
-            og skal kun distribueres gjennom mail. Dersom informasjonen skal deles med personer utenfor Abakus
-            må det spesifiseres for de påmeldte hvem informasjonen skal deles med.`}
-            onConfirm={this.onDeleteMeeting}
-          >
-            <Button size="large">Eksporter deltakere til csv</Button>
-          </ConfirmModalWithParent>
+          {this.state.generatedCSV.url && this.state.generatedCSV.filename ? (
+            <a
+              href={this.state.generatedCSV.url}
+              download={this.state.generatedCSV.filename}
+            >
+              Last ned CSV
+            </a>
+          ) : (
+            <ConfirmModalWithParent
+              title="Eksporter til csv"
+              closeOnConfirm={true}
+              message={`Informasjonen du eksporterer MÅ slettes når det ikke lenger er behov for den,
+                og skal kun distribueres gjennom mail. Dersom informasjonen skal deles med personer utenfor Abakus
+                må det spesifiseres for de påmeldte hvem informasjonen skal deles med.`}
+              onConfirm={async () => {
+                const blob = await fetch(
+                  `${config.serverUrl}/events/${eventId}/export/`,
+                  {
+                    headers: { Authorization: `JWT ${token}` },
+                  }
+                ).then((response) => response.blob());
+                this.setState({
+                  generatedCSV: {
+                    url: URL.createObjectURL(blob),
+                    filename: event.title.replace(/ /g, '_') + '.csv',
+                  },
+                });
+              }}
+            >
+              <Button size="large">Eksporter deltakere til csv</Button>
+            </ConfirmModalWithParent>
+          )}
         </Flex>
         <Flex column>
           <div>
