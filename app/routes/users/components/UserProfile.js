@@ -397,6 +397,7 @@ export default class UserProfile extends Component<Props, EventsProps> {
                     username={user.username}
                     updatePhotoConsent={updatePhotoConsent}
                     userId={user.id}
+                    isMe={isMe}
                   />
                 </Card>
               </div>

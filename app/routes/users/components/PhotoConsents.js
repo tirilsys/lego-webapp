@@ -19,6 +19,7 @@ type Props = {
     userId: Number
   ) => Promise<*>,
   userId: Number,
+  isMe: boolean,
 };
 
 type Option = {
@@ -43,7 +44,13 @@ class PhotoConsents extends Component<Props, State> {
   };
 
   render() {
-    const { photoConsents, username, updatePhotoConsent, userId } = this.props;
+    const {
+      photoConsents,
+      username,
+      updatePhotoConsent,
+      userId,
+      isMe,
+    } = this.props;
     const { selectedOption } = this.state;
 
     const getYear = (semesterStr: string): number =>
@@ -175,7 +182,7 @@ class PhotoConsents extends Component<Props, State> {
           >
             <Button
               className={styles.notConsentBtn}
-              disabled={isNotConsenting('SOCIAL_MEDIA')}
+              disabled={isNotConsenting('SOCIAL_MEDIA') || !isMe}
             >
               {hasNotSelectedConsent('SOCIAL_MEDIA')
                 ? 'Nei'
@@ -186,6 +193,7 @@ class PhotoConsents extends Component<Props, State> {
           </ConfirmModalWithParent>
           {hasNotSelectedConsent('SOCIAL_MEDIA') && (
             <Button
+              disabled={!isMe}
               onClick={() =>
                 updatePhotoConsent(
                   {
@@ -238,7 +246,7 @@ class PhotoConsents extends Component<Props, State> {
           >
             <Button
               className={styles.notConsentBtn}
-              disabled={isNotConsenting('WEBSITE')}
+              disabled={isNotConsenting('WEBSITE') || !isMe}
             >
               {hasNotSelectedConsent('WEBSITE')
                 ? 'Nei'
@@ -249,6 +257,7 @@ class PhotoConsents extends Component<Props, State> {
           </ConfirmModalWithParent>
           {hasNotSelectedConsent('WEBSITE') && (
             <Button
+              disabled={!isMe}
               onClick={() =>
                 updatePhotoConsent(
                   {
