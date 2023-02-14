@@ -83,6 +83,7 @@ export type EditingEvent = Event & {
   registrationDeadline: Dateish;
   hasFeedbackQuestion: boolean;
   authors: Option[];
+  isClarified: boolean;
 };
 
 // Event fields that should be created or updated based on the API.
