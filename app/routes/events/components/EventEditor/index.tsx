@@ -555,12 +555,12 @@ function EventEditor({
                       actionGrant={actionGrant}
                       event={event}
                       deleteEvent={deleteEvent}
+
                     />
                   )}
                 </Flex>
               )}
           </ContentSidebar>
-
         </ContentSection>
         <Tooltip
           style={{
@@ -568,7 +568,6 @@ function EventEditor({
           }}
           content="Jeg er kjent med at jeg kun kan bruke rettighetene mine til å opprette abakusarrangement som er i tråd med arrangementskalenderen og Abakus sine blesteregler, og at jeg må ta kontakt med hs@abakus.no dersom jeg er usikker eller ønsker å oprette et annet/eksternt arrangement."
         >
-
           <Field
             label="Arrangementet er avklart i arrangementskalenderen"
             name="isClarified"
@@ -578,7 +577,6 @@ function EventEditor({
             normalize={(v) => !!v}
           />
         </Tooltip>
-
 
         <Flex wrap>
           {isEditPage && (
@@ -658,7 +656,7 @@ const validate = (data) => {
   }
 
   if (!data.isClarified) {
-    errors.isClarified = 'Arrangementet må være avklart'
+    errors.isClarified = 'Arrangementet må være avklart';
   }
 
   if (!isInteger(data.registrationDeadlineHours)) {
