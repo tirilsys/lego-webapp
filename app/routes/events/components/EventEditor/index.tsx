@@ -555,7 +555,6 @@ function EventEditor({
                       actionGrant={actionGrant}
                       event={event}
                       deleteEvent={deleteEvent}
-
                     />
                   )}
                 </Flex>
@@ -566,7 +565,7 @@ function EventEditor({
           style={{
             marginLeft: '3px',
           }}
-          content="Jeg er kjent med at jeg kun kan bruke rettighetene mine til å opprette abakusarrangement som er i tråd med arrangementskalenderen og Abakus sine blesteregler, og at jeg må ta kontakt med hs@abakus.no dersom jeg er usikker eller ønsker å oprette et annet/eksternt arrangement."
+          content="Jeg er kjent med at jeg kun kan bruke rettighetene mine til å opprette abakusarrangement som er i tråd med arrangementskalenderen og Abakus sine blesteregler, og at jeg må ta kontakt med hs@abakus.no dersom jeg er usikker eller ønsker å opprette et annet/eksternt arrangement."
         >
           <Field
             label="Arrangementet er avklart i arrangementskalenderen"
